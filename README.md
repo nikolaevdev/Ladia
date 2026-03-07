@@ -1,6 +1,7 @@
 # Ladya
 
-//// после 21:00
+//// 
+после 21:00
 Демо видео https://disk.yandex.ru/i/Zz_fWZmgak-iZg.
 Ru перевод https://github.com/nikolaevdev/Ladia/tree/main/ru_documentation
 ////
