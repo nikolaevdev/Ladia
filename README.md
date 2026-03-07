@@ -108,7 +108,7 @@ Supporting modules:
 - `ui/` — Compose screens, components, and UI models;
 - `navigation/` — application routes and host.
 
-A more detailed breakdown is available in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+A more detailed breakdown is available in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 ## Application screens
 
@@ -179,7 +179,7 @@ app/
     MainActivity.kt
 ```
 
-A more explicit module map is available in [`docs/REPOSITORY_STRUCTURE.md`](docs/REPOSITORY_STRUCTURE.md).
+A more explicit module map is available in [`REPOSITORY_STRUCTURE.md`](REPOSITORY_STRUCTURE.md).
 
 ## Build requirements
 
@@ -251,11 +251,11 @@ A more explicit module map is available in [`docs/REPOSITORY_STRUCTURE.md`](docs
 
 ## Documentation included in this package
 
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-- [`docs/REPOSITORY_STRUCTURE.md`](docs/REPOSITORY_STRUCTURE.md)
-- [`docs/STAGE_HISTORY.md`](docs/STAGE_HISTORY.md)
-- [`docs/STAGE_5_SECURITY_PLAN.md`](docs/STAGE_5_SECURITY_PLAN.md)
-- [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md)
+- [`ARCHITECTURE.md`](ARCHITECTURE.md)
+- [`REPOSITORY_STRUCTURE.md`](REPOSITORY_STRUCTURE.md)
+- [`STAGE_HISTORY.md`](STAGE_HISTORY.md)
+- [`STAGE_5_SECURITY_PLAN.md`](STAGE_5_SECURITY_PLAN.md)
+- [`THREAT_MODEL.md`](THREAT_MODEL.md)
 
 ## Roadmap
 
