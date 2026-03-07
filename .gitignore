@@ -1,0 +1,49 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Local configuration
+local.properties
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+
+# Kotlin
+.kotlin/
+
+# Logs
+*.log
+
+# Keystore
+*.jks
+*.keystore
+
+# APK / AAB
+*.apk
+*.aab
+
+# Android Studio navigation
+.navigation/
+
+# Android Studio temp files
+*.tmp
+*.temp
+
+# OS files
+Thumbs.db
+
+# Gradle wrapper (оставляем)
+!gradle/wrapper/gradle-wrapper.jar
