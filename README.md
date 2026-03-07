@@ -1,5 +1,8 @@
 # Ladya
 
+Демо видео https://disk.yandex.ru/i/Zz_fWZmgak-iZg.
+
+
 **Ladya** is an Android prototype of a decentralized peer-to-peer messenger without a central server.
 The application is designed for local autonomous communication between devices inside one Wi-Fi network, with support for direct sessions, relay delivery, file exchange, voice communication, and 1:1 video calls.
 
