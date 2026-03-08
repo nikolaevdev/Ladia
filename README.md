@@ -6,6 +6,12 @@
 Ru перевод https://github.com/nikolaevdev/Ladia/tree/main/ru_documentation
 ////
 
+//// 
+Презентация проекта
+https://github.com/nikolaevdev/Ladia/blob/main/Презентация%20проекта%2C%20открыть%20в%20браузере.html
+**Скачать и открыть в браузере** 
+//// 
+
 **Ladya** is an Android prototype of a decentralized peer-to-peer messenger without a central server.
 The application is designed for local autonomous communication between devices inside one Wi-Fi network, with support for direct sessions, relay delivery, file exchange, voice communication, and 1:1 video calls.
 
