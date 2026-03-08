@@ -7,7 +7,7 @@ Ru перевод https://github.com/nikolaevdev/Ladia/tree/main/ru_documentatio
 ////
 
 Презентация проекта
-[`Презентация проекта, открыть в браузере.html`](Презентация проекта, открыть в браузере.html).
+https://github.com/nikolaevdev/Ladia/blob/main/Презентация%20проекта%2C%20открыть%20в%20браузере.html
 
 
 **Ladya** is an Android prototype of a decentralized peer-to-peer messenger without a central server.
