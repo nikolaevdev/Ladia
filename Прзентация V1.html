@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ladia — локальный децентрализованный мессенджер</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #F7F7F5;
+            --surface: #FFFFFF;
+            --surface-muted: #FAFAFA;
+            --text-primary: #111111;
+            --text-secondary: #6B6B6B;
+            --border: #E5E5E5;
+            --line: #EDEDED;
+            --accent: #2F6BFF;
+            --accent-soft: #EAF0FF;
+            --accent-strong: #1D4ED8;
+            --ok: #35A853;
+            --danger-soft: #FFEBEE;
+            --danger: #C62828;
+            --shadow-soft: 0 10px 36px rgba(17, 17, 17, 0.06);
+            --shadow-hover: 0 14px 42px rgba(17, 17, 17, 0.10);
+            --radius-xl: 20px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --max-content: 1320px;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            position: fixed;
+            inset: 0 auto auto 0;
+            height: 4px;
+            width: 0;
+            background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+            transition: width 0.28s ease;
+            z-index: 1000;
+        }
+
+        .brand {
+            position: fixed;
+            top: 32px;
+            left: 56px;
+            z-index: 100;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+        }
+
+        .brand span {
+            color: var(--accent);
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: none;
+            opacity: 0;
+            padding: 72px 84px 96px;
+            transition: opacity 0.35s ease;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .slide-shell {
+            width: 100%;
+            max-width: var(--max-content);
+            margin: 0 auto;
+        }
+
+        .slide-header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 48px;
+            line-height: 1.16;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 14px;
+        }
+
+        h2 {
+            font-size: 40px;
+            line-height: 1.18;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 14px;
+        }
+
+        .subtitle {
+            font-size: 22px;
+            line-height: 1.45;
+            color: var(--text-secondary);
+        }
+
+        .muted {
+            color: var(--text-secondary);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: stretch;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card-padding-lg {
+            padding: 34px;
+        }
+
+        .card-padding-md {
+            padding: 28px;
+        }
+
+        .problem-text {
+            font-size: 20px;
+            line-height: 1.55;
+        }
+
+        .bullet-list {
+            list-style: none;
+            margin-top: 20px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .bullet-list li {
+            position: relative;
+            padding-left: 22px;
+            color: var(--text-secondary);
+            font-size: 18px;
+            line-height: 1.45;
+        }
+
+        .bullet-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 11px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .solution-box {
+            margin-top: 24px;
+            padding: 20px 22px;
+            border-left: 4px solid var(--accent);
+            background: var(--accent-soft);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            font-size: 17px;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .comparison-stack {
+            display: grid;
+            gap: 18px;
+        }
+
+        .scheme-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--text-secondary);
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .network-scheme {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 22px;
+            padding: 16px 0;
+        }
+
+        .device-icon,
+        .cloud-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .device-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: #F1F3F5;
+        }
+
+        .device-icon.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        .cloud-icon {
+            width: 86px;
+            height: 54px;
+            border-radius: 999px;
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+
+        .connection-line {
+            flex: 1;
+            min-width: 56px;
+            height: 2px;
+            background: #D9D9D9;
+            position: relative;
+        }
+
+        .connection-line.local {
+            background: var(--accent);
+        }
+
+        .connection-line.local::after {
+            content: "✓";
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .scheme-caption {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.45;
+            color: var(--text-secondary);
+        }
+
+        .scheme-caption.accent {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 12px;
+        }
+
+        .feature-card {
+            padding: 28px 24px;
+            text-align: center;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .feature-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+        }
+
+        .feature-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            line-height: 1.45;
+            color: var(--text-secondary);
+        }
+
+        .architecture-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .tech-badge {
+            padding: 9px 16px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .architecture-scheme {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            padding: 10px 0;
+        }
+
+        .node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .node-circle {
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            background: var(--surface);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: 800;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .node-circle.relay {
+            border-color: #8A8A8A;
+            color: #6E6E6E;
+        }
+
+        .node-label {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        .connection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .connection-line-h {
+            width: 126px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 999px;
+        }
+
+        .connection-line-h.relay-line {
+            width: 126px;
+            height: 0;
+            border-top: 3px dashed #8B8B8B;
+            background: transparent;
+        }
+
+        .connection-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 700;
+        }
+
+        .architecture-grid {
+            width: 100%;
+            max-width: 920px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .mini-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-soft);
+            padding: 20px 16px;
+            text-align: center;
+        }
+
+        .mini-card-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .mini-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .mini-card-text {
+            font-size: 12px;
+            line-height: 1.4;
+            color: var(--text-secondary);
+        }
+
+        .mvp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+
+        .mvp-card {
+            padding: 30px 30px 26px;
+        }
+
+        .mvp-card.future {
+            background: var(--surface-muted);
+            border-style: dashed;
+        }
+
+        .mvp-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--ok);
+            flex-shrink: 0;
+        }
+
+        .status-dot.future {
+            background: var(--accent);
+        }
+
+        .mvp-title {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: grid;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 0;
+            border-bottom: 1px solid var(--line);
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-icon {
+            color: var(--ok);
+            font-weight: 800;
+        }
+
+        .arrow-icon {
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 10px;
+        }
+
+        .security-card {
+            padding: 28px 24px;
+            text-align: center;
+        }
+
+        .security-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 18px;
+            border-radius: 18px;
+            background: var(--accent-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .security-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .security-desc {
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        .note-box {
+            margin-top: 28px;
+            padding: 18px 22px;
+            border-radius: var(--radius-md);
+            background: var(--accent-soft);
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .note-box strong {
+            color: var(--text-primary);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-bottom: 28px;
+        }
+
+        .summary-card {
+            padding: 28px 26px;
+            border-top: 4px solid var(--accent);
+        }
+
+        .summary-number {
+            font-size: 44px;
+            line-height: 1;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .summary-text {
+            font-size: 18px;
+            line-height: 1.42;
+            font-weight: 700;
+        }
+
+        .demo-banner {
+            margin-top: auto;
+            padding: 28px 32px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: #fff;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .demo-text {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+        }
+
+        .controls {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px;
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(229,229,229,0.9);
+            border-radius: 999px;
+            box-shadow: 0 8px 28px rgba(17,17,17,0.10);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .controls.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(10px);
+        }
+
+        .nav-btn {
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .slide-counter {
+            min-width: 62px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding-left: 6px;
+        }
+
+        @media (max-width: 1280px) {
+            .slide {
+                padding: 56px 56px 88px;
+            }
+
+            h1 {
+                font-size: 40px;
+            }
+
+            h2 {
+                font-size: 34px;
+            }
+
+            .content-grid,
+            .mvp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .architecture-grid,
+            .security-grid,
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .brand {
+                left: 40px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .slide {
+                padding: 44px 28px 88px;
+            }
+
+            .brand {
+                top: 22px;
+                left: 24px;
+                font-size: 20px;
+            }
+
+            .features-grid,
+            .architecture-grid,
+            .security-grid,
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .architecture-scheme {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .connection-line-h,
+            .connection-line-h.relay-line {
+                width: 3px;
+                height: 62px;
+                border-top: none;
+                border-left: 3px dashed #8B8B8B;
+            }
+
+            .connection-line-h {
+                background: var(--accent);
+                border-left: none;
+            }
+
+            .connection-label {
+                writing-mode: vertical-rl;
+                transform: rotate(180deg);
+            }
+
+            .controls {
+                bottom: 18px;
+            }
+        }
+
+        @media print {
+            .controls,
+            .progress-bar,
+            .brand {
+                display: none !important;
+            }
+
+            body {
+                overflow: visible;
+            }
+
+            .slide {
+                position: static;
+                display: flex !important;
+                opacity: 1 !important;
+                min-height: 100vh;
+                page-break-after: always;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="brand">La<span>dia</span></div>
+
+    <main class="presentation" aria-label="Презентация проекта Ladia">
+        <!-- Слайд 1 -->
+        <section class="slide active" id="slide1">
+            <div class="slide-shell">
+                <div class="slide-header">
+                    <div class="eyebrow">Проблема и решение</div>
+                    <h1>Ladia — локальный децентрализованный<br>мессенджер для корпоративной среды</h1>
+                </div>
+
+                <div class="content-grid">
+                    <article class="card card-padding-lg">
+                        <div class="problem-text">
+                            Внутренняя коммуникация в организациях часто остаётся на уровне телефона и электронной почты.
+                            <ul class="bullet-list">
+                                <li>Этого недостаточно для оперативного общения и быстрых согласований</li>
+                                <li>Сотрудники переходят во внешние мессенджеры</li>
+                                <li>Коммуникация выходит за пределы внутреннего контура организации</li>
+                            </ul>
+
+                            <div class="solution-box">
+                                Решение: локальный мессенджер без внешнего сервера, работающий внутри корпоративной сети
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="comparison-stack">
+                        <article class="card card-padding-md">
+                            <div class="scheme-title">Традиционная схема</div>
+                            <div class="network-scheme">
+                                <div class="device-icon">💻</div>
+                                <div class="connection-line"></div>
+                                <div class="cloud-icon">☁️</div>
+                                <div class="connection-line"></div>
+                                <div class="device-icon">📱</div>
+                            </div>
+                            <div class="scheme-caption">Зависимость от внешней инфраструктуры и единой точки отказа</div>
+                        </article>
+
+                        <article class="card card-padding-md">
+                            <div class="scheme-title">Ladia: локальный контур</div>
+                            <div class="network-scheme">
+                                <div class="device-icon active">💻</div>
+                                <div class="connection-line local"></div>
+                                <div class="device-icon active">📱</div>
+                                <div class="connection-line local"></div>
+                                <div class="device-icon active">🖥️</div>
+                            </div>
+                            <div class="scheme-caption accent">Прямое P2P-взаимодействие внутри корпоративной сети</div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Слайд 2 -->
+        <section class="slide" id="slide2">
+            <div class="slide-shell">
+                <div class="slide-header">
+                    <div class="eyebrow">Цель проекта</div>
+                    <h2>Цель проекта и ключевые требования</h2>
+                    <div class="subtitle">Разработка MVP локального децентрализованного мессенджера</div>
+                </div>
+
+                <div class="features-grid">
+                    <article class="card feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <div class="feature-title">Обнаружение узлов</div>
+                        <div class="feature-desc">Автоматический поиск устройств в локальной сети</div>
+                    </article>
+
+                    <article class="card feature-card">
+                        <div class="feature-icon">🔗</div>
+                        <div class="feature-title">Прямое P2P</div>
+                        <div class="feature-desc">Установление соединения между двумя узлами</div>
+                    </article>
+
+                    <article class="card feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <div class="feature-title">Ретрансляция</div>
+                        <div class="feature-desc">Многопереходная передача через промежуточные узлы</div>
+                    </article>
+
+                    <article class="card feature-card">
+                        <div class="feature-icon">💬</div>
+                        <div class="feature-title">Чат</div>
+                        <div class="feature-desc">Текстовое общение 1:1 и групповой обмен сообщениями</div>
+                    </article>
+
+                    <article class="card feature-card">
+                        <div class="feature-icon">📎</div>
+                        <div class="feature-title">Передача файлов</div>
+                        <div class="feature-desc">Отправка файлов по частям с контролем передачи</div>
+                    </article>
+
+                    <article class="card feature-card">
+                        <div class="feature-icon">🎥</div>
+                        <div class="feature-title">Аудио и видео</div>
+                        <div class="feature-desc">Передача голоса и видеосвязь в реальном времени</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Слайд 3 -->
+        <section class="slide" id="slide3">
+            <div class="slide-shell">
+                <div class="slide-header">
+                    <div class="eyebrow">Сетевая схема</div>
+                    <h2>Архитектура Ladia</h2>
+                </div>
+
+                <div class="architecture-wrap">
+                    <div class="tech-stack">
+                        <div class="tech-badge">Android</div>
+                        <div class="tech-badge">Kotlin</div>
+                        <div class="tech-badge">Jetpack Compose</div>
+                        <div class="tech-badge">NSD</div>
+                        <div class="tech-badge">TCP</div>
+                        <div class="tech-badge">UDP</div>
+                    </div>
+
+                    <div class="architecture-scheme">
+                        <div class="node">
+                            <div class="node-circle">A</div>
+                            <div class="node-label">Узел A</div>
+                        </div>
+
+                        <div class="connection">
+                            <div class="connection-line-h"></div>
+                            <div class="connection-label">Прямой канал</div>
+                        </div>
+
+                        <div class="node">
+                            <div class="node-circle">B</div>
+                            <div class="node-label">Узел B</div>
+                        </div>
+
+                        <div class="connection">
+                            <div class="connection-line-h relay-line"></div>
+                            <div class="connection-label">Ретрансляция</div>
+                        </div>
+
+                        <div class="node">
+                            <div class="node-circle relay">C</div>
+                            <div class="node-label">Узел C</div>
+                        </div>
+                    </div>
+
+                    <div class="architecture-grid">
+                        <article class="mini-card">
+                            <div class="mini-card-icon">📡</div>
+                            <div class="mini-card-title">Обнаружение</div>
+                            <div class="mini-card-text">NSD для поиска узлов в локальной сети</div>
+                        </article>
+
+                        <article class="mini-card">
+                            <div class="mini-card-icon">💬</div>
+                            <div class="mini-card-title">Сообщения</div>
+                            <div class="mini-card-text">TCP Session для текстового обмена и сигналов</div>
+                        </article>
+
+                        <article class="mini-card">
+                            <div class="mini-card-icon">📁</div>
+                            <div class="mini-card-title">Файлы</div>
+                            <div class="mini-card-text">TCP Chunked Transfer для передачи по частям</div>
+                        </article>
+
+                        <article class="mini-card">
+                            <div class="mini-card-icon">🎙️</div>
+                            <div class="mini-card-title">Аудио и видео</div>
+                            <div class="mini-card-text">UDP для потоковой передачи в реальном времени</div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Слайд 4 -->
+        <section class="slide" id="slide4">
+            <div class="slide-shell">
+                <div class="slide-header">
+                    <div class="eyebrow">Текущее состояние</div>
+                    <h2>Реализованный функционал MVP</h2>
+                </div>
+
+                <div class="mvp-grid">
+                    <article class="card mvp-card">
+                        <div class="mvp-head">
+                            <div class="status-dot"></div>
+                            <div class="mvp-title">Уже реализовано</div>
+                        </div>
+
+                        <ul class="feature-list">
+                            <li><span class="check-icon">✓</span> Обнаружение устройств в сети</li>
+                            <li><span class="check-icon">✓</span> Установление P2P-соединений</li>
+                            <li><span class="check-icon">✓</span> Текстовый чат 1:1</li>
+                            <li><span class="check-icon">✓</span> Групповой обмен сообщениями</li>
+                            <li><span class="check-icon">✓</span> Ретрансляция и многопереходная передача</li>
+                            <li><span class="check-icon">✓</span> Передача файлов</li>
+                            <li><span class="check-icon">✓</span> Аудиосвязь 1:1</li>
+                            <li><span class="check-icon">✓</span> Видеосвязь 1:1</li>
+                            <li><span class="check-icon">✓</span> Журналы и диагностика сети</li>
+                        </ul>
+                    </article>
+
+                    <article class="card mvp-card future">
+                        <div class="mvp-head">
+                            <div class="status-dot future"></div>
+                            <div class="mvp-title">Следующий этап</div>
+                        </div>
+
+                        <ul class="feature-list">
+                            <li><span class="arrow-icon">→</span> Полноценное шифрование payload</li>
+                            <li><span class="arrow-icon">→</span> Secure containers для файлов и медиа</li>
+                            <li><span class="arrow-icon">→</span> Steganographic transport</li>
+                            <li><span class="arrow-icon">→</span> BLE / Wi-Fi Direct</li>
+                            <li><span class="arrow-icon">→</span> Расширение групповых и mesh-сценариев</li>
+                            <li><span class="arrow-icon">→</span> Автотесты и усиление модульности</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Слайд 5 -->
+        <section class="slide" id="slide5">
+            <div class="slide-shell">
+                <div class="slide-header">
+                    <div class="eyebrow">Устойчивость системы</div>
+                    <h2>Надёжность передачи и базовая безопасность</h2>
+                </div>
+
+                <div class="security-grid">
+                    <article class="card security-card">
+                        <div class="security-icon">🛡️</div>
+                        <div class="security-title">Надёжность</div>
+                        <div class="security-desc">
+                            Идентификаторы пакетов, подтверждения доставки, защита от дублирования и циклов маршрутизации
+                        </div>
+                    </article>
+
+                    <article class="card security-card">
+                        <div class="security-icon">📊</div>
+                        <div class="security-title">Метрики и диагностика</div>
+                        <div class="security-desc">
+                            Контроль состояния сети, задержек, соединений, ошибок и восстановления маршрутов
+                        </div>
+                    </article>
+
+                    <article class="card security-card">
+                        <div class="security-icon">🔐</div>
+                        <div class="security-title">Базовая безопасность</div>
+                        <div class="security-desc">
+                            Trust-модель, идентификация узлов и проверка соединений. Полноценное шифрование — следующий этап
+                        </div>
+                    </article>
+                </div>
+
+                <div class="note-box">
+                    <strong>Примечание:</strong> текущая версия — это рабочий MVP. Полноценный аудит безопасности и усиление защиты вынесены в дальнейшее развитие проекта.
+                </div>
+            </div>
+        </section>
+
+        <!-- Слайд 6 -->
+        <section class="slide" id="slide6">
+            <div class="slide-shell">
+                <div class="slide-header">
+                    <div class="eyebrow">Итог</div>
+                    <h2>Итоги проекта</h2>
+                </div>
+
+                <div class="summary-grid">
+                    <article class="card summary-card">
+                        <div class="summary-number">01</div>
+                        <div class="summary-text">Рабочий MVP локального децентрализованного мессенджера</div>
+                    </article>
+
+                    <article class="card summary-card">
+                        <div class="summary-number">02</div>
+                        <div class="summary-text">Ключевые сценарии: чат, файлы, аудио/видео и ретрансляция</div>
+                    </article>
+
+                    <article class="card summary-card">
+                        <div class="summary-number">03</div>
+                        <div class="summary-text">Готовая основа для внутреннего корпоративного контура связи</div>
+                    </article>
+                </div>
+
+                <div class="demo-banner">
+                    <div class="demo-text">Далее — живая демонстрация приложения</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="controls" id="controls">
+        <button class="nav-btn" onclick="prevSlide()" aria-label="Предыдущий слайд">‹</button>
+        <div class="slide-counter"><span id="current">1</span> / 6</div>
+        <button class="nav-btn" onclick="nextSlide()" aria-label="Следующий слайд">›</button>
+        <div class="hint">← → / пробел / H / F</div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 6;
+
+        const controls = document.getElementById("controls");
+        const progressBar = document.getElementById("progressBar");
+        const currentEl = document.getElementById("current");
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll(".slide");
+
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+
+            slides.forEach((slide) => slide.classList.remove("active"));
+            document.getElementById(`slide${currentSlide}`).classList.add("active");
+
+            currentEl.textContent = currentSlide;
+            progressBar.style.width = `${(currentSlide / totalSlides) * 100}%`;
+        }
+
+        function nextSlide() {
+            currentSlide += 1;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide -= 1;
+            showSlide(currentSlide);
+        }
+
+        function toggleControls() {
+            controls.classList.toggle("hidden");
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen?.();
+            } else {
+                document.exitFullscreen?.();
+            }
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowRight" || e.key === " ") {
+                e.preventDefault();
+                nextSlide();
+            }
+
+            if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                prevSlide();
+            }
+
+            if (e.key.toLowerCase() === "h") {
+                toggleControls();
+            }
+
+            if (e.key.toLowerCase() === "f") {
+                toggleFullscreen();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener("touchstart", (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener("touchend", (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+
+            if (touchStartX - touchEndX > 50) nextSlide();
+            if (touchEndX - touchStartX > 50) prevSlide();
+        });
+
+        showSlide(1);
+    </script>
+</body>
+</html>
