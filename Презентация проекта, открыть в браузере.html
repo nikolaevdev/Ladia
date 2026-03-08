@@ -578,6 +578,79 @@
             margin: 0 auto;
         }
 
+
+        .video-slide-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 0.85fr;
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        .video-frame {
+            position: relative;
+            width: 100%;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            background: #0F172A;
+            border: 1px solid #D7DCE5;
+            box-shadow: var(--shadow-soft);
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-frame iframe {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #0F172A;
+            object-fit: contain;
+        }
+
+        .video-side-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .video-points {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+
+        .video-points li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 16px;
+            line-height: 1.45;
+            color: var(--text-secondary);
+        }
+
+        .video-point-badge {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .video-note {
+            padding: 16px 18px;
+            border-radius: var(--radius-md);
+            background: var(--surface-muted);
+            border: 1px dashed var(--border);
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
         .controls {
             position: fixed;
             left: 50%;
@@ -1121,6 +1194,40 @@
         <section class="slide" id="slide10">
             <div class="slide-shell">
                 <div class="slide-header">
+                    <div class="eyebrow">Видео-демо</div>
+                    <h2>Демо работы приложения</h2>
+                    <div class="subtitle">В ролике демонстрируются ключевые пользовательские и сетевые сценарии: обнаружение устройств, установление P2P-сессии, обмен сообщениями и передача данных в mesh-сети без центрального сервера</div>
+                </div>
+                <div class="video-slide-grid">
+                    <article class="card card-padding-lg">
+                        <div class="scheme-title">Демо-видео</div>
+                        <div class="video-frame">
+                            <iframe src="https://vkvideo.ru/video_ext.php?oid=-166033509&id=456239018&hash=56b7746eb9414a33&hd=3"
+                                    title="Демо работы приложения Ладья"
+                                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                                    frameborder="0"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </article>
+                    <article class="card card-padding-lg video-side-card">
+                        <div>
+                            <div class="scheme-title">Содержание демонстрации</div>
+                            <ul class="video-points">
+                                <li><span class="video-point-badge">1</span><span>Обнаружение и отображение доступных устройств в локальной сети</span></li>
+                                <li><span class="video-point-badge">2</span><span>Установление P2P-сессии и двусторонний обмен сообщениями</span></li>
+                                <li><span class="video-point-badge">3</span><span>Передача файла со статусом, прогрессом и подтверждением доставки</span></li>
+                                <li><span class="video-point-badge">4</span><span>Multihop / relay-маршрутизация через промежуточный узел</span></li>
+                            </ul>
+                        </div>
+                        <div class="video-note"><strong>Результат демонстрации:</strong> ролик подтверждает работоспособность discovery-механизма, P2P-соединений, передачи файлов и relay-маршрутизации в реальном пользовательском сценарии.</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide11">
+            <div class="slide-shell">
+                <div class="slide-header">
                     <div class="eyebrow">Команда</div>
                     <h2>Команда Web Wizards</h2>
                     <div class="subtitle">Команда проекта «Ладья»</div>
@@ -1148,7 +1255,7 @@
             </div>
         </section>
 
-        <section class="slide thanks-slide" id="slide11">
+        <section class="slide thanks-slide" id="slide12">
             <div class="slide-shell">
                 <div class="thanks-wrap">
                     <div class="eyebrow" style="margin: 0 auto;">Финал</div>
@@ -1176,7 +1283,7 @@
 
     <div class="controls" id="controls">
         <button class="nav-btn" onclick="prevSlide()" aria-label="Предыдущий слайд">‹</button>
-        <div class="slide-counter"><span id="current">1</span> / 11</div>
+        <div class="slide-counter"><span id="current">1</span> / 12</div>
         <button class="nav-btn" onclick="nextSlide()" aria-label="Следующий слайд">›</button>
         <button class="nav-btn" onclick="toggleControls()" aria-label="Скрыть панель управления">×</button>
         <div class="hint">← → / пробел / H / F</div>
@@ -1186,7 +1293,7 @@
 
     <script>
         let currentSlide = 1;
-        const totalSlides = 11;
+        const totalSlides = 12;
 
         const controls = document.getElementById("controls");
         const controlToggle = document.getElementById("controlToggle");
